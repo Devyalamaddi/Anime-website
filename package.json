@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@consumet/extensions": "^1.8.0",
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^11.11.10",
     "hls.js": "^1.5.17",
