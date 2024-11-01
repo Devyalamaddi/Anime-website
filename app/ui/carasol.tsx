@@ -8,7 +8,7 @@ import next from "@/public/assets/next.png";
 import previous from "@/public/assets/previous.png";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import load from '@/public/assets/loadingluffy2.gif';
+import load from '@/public/assets/luffyskipping.gif';
 
 interface AnimeResponse {
   currentPage: string | number;

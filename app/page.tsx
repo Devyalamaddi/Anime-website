@@ -309,7 +309,7 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen bg-black p-48 text-white relative"
+      className="min-h-screen bg-black p-48 sm:p-2 text-white relative"
       style={{
         backgroundImage: "url('https://wallpapergod.com/images/hd/dark-anime-1920X1200-wallpaper-hap3kxf8czba91pc.jpeg')",
         backgroundSize: "cover",
