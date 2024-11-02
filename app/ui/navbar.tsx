@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, User, LogOut } from "lucide-react";
+import { Menu, X, User, LogOut, Search, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import logo2 from '@/public/assets/flaglogo.gif';
+import SearchBar from "./searchBar";
 
 function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,7 +12,7 @@ function Nav() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-    document.body.style.overflow = isMenuOpen ? "unset" : "hidden";
+    // document.body.style.overflow = isMenuOpen ? "unset" : "hidden";
   };
 
   const status = typeof window !== 'undefined' ? localStorage.getItem('loginstatus') : null;
@@ -34,6 +35,20 @@ function Nav() {
     { href: "/anime-list", label: "List of Anime" },
   ];
 
+  const [searchStatus, setSearchStatus] = useState(false);
+  function searchActive( a? : Number){
+    if (a===0){
+      setSearchStatus(false);
+    }
+    else{
+      setSearchStatus(!searchStatus);
+    }
+  }
+  const handleSearch = (query: string) => {
+    console.log("Search query:", query);
+    // Nak search logic ardham avvale sir (-_-)
+  };
+
   return (
     <div className="bg-black shadow-lg border-b border-gray-800">
       <div className="mx-auto px-10">
@@ -41,26 +56,29 @@ function Nav() {
           {/* Menu button on far left */}
           <button
             onClick={toggleMenu}
-            className={`rounded-lg text-gray-400 transition duration-200 ${isMenuOpen
-              ? 'hover:text-white bg-transparent'
+            className={`rounded-lg z-50 text-gray-400 transition duration-200 ${isMenuOpen
+              ? 'hover:text-white bg-transparent '
               : 'hover:text-white hover:bg-transparent'
               } focus:outline-none focus:ring-2`}
             aria-label="Toggle menu"
           >
             {isMenuOpen ? (
-              <X className="w-7 h-7" />
+              <X className="w-7 h-7 " />
             ) : (
               <Menu className="w-6 h-6" />
             )}
           </button>
 
           {/* Logo centered between menu and nav items */}
-          <div className="flex-1 flex justify-center lg:justify-start lg:ml-8">
-            <Link href="/" className="flex items-center space-x-1">
+          <div className="flex-1 flex justify-between lg:ml-8">
+            <Link href="/" className="">
               <span className="text-2xl font-bold text-white tracking-tight hover:text-gray-300 transition duration-200">
-                <Image src={logo2} alt="logo" width={70} height={70} />
+                <Image src={logo2} alt="logo" width={60} height={60} style={{minHeight:'60px', minWidth:'60px'}} />
               </span>
             </Link>
+            <li className="lg:pb-5">
+                <SearchIcon className="text-white" onClick={()=>searchActive()}/>
+            </li>
           </div>
 
           {/* Navigation items on the right */}
@@ -71,6 +89,7 @@ function Nav() {
                   <Link href={item.href}>
                     <button
                       className="px-4 py-2 font-extrabold text-[20px] text-white hover:text-gray-300 hover:bg-gray-800 rounded-lg transition duration-200"
+                      onClick={()=>searchActive(0)}
                     >
                       {item.label}
                     </button>
@@ -122,6 +141,9 @@ function Nav() {
             </ul>
           </nav>
         </div>
+        {
+          searchStatus && <div className="mt-4"><SearchBar onSearch={handleSearch} isSearching={searchStatus} calledAt={"n"} /></div>
+        }
       </div>
 
       {/* Mobile menu overlay */}
