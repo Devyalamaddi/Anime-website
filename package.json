@@ -16,6 +16,7 @@
     "hls.js": "^1.5.17",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.454.0",
+    "luffy5": "file:",
     "mongoose": "^8.7.3",
     "next": "14",
     "plyr": "^3.7.8",

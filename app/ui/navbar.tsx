@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X, User, LogOut, Search, SearchIcon } from "lucide-react";
 import Image from "next/image";
@@ -39,11 +39,25 @@ function Nav() {
   function searchActive( a? : Number){
     if (a===0){
       setSearchStatus(false);
+    }else{
+        setSearchStatus(!searchStatus);
+      }
     }
-    else{
-      setSearchStatus(!searchStatus);
+
+    const [isLandingPage, setIsLandingPage] = useState(() => {
+      const stored = sessionStorage.getItem('isLandingPage');
+      return stored === null ? true : JSON.parse(stored);
+    });
+    
+    function searchIconDisplay() {
+      setIsLandingPage(false);
+      sessionStorage.setItem('isLandingPage', 'false');
     }
-  }
+    
+    useEffect(() => {
+      sessionStorage.setItem('isLandingPage', JSON.stringify(isLandingPage));
+    }, [isLandingPage]);
+
   const handleSearch = (query: string) => {
     console.log("Search query:", query);
     // Nak search logic ardham avvale sir (-_-)
@@ -70,15 +84,17 @@ function Nav() {
           </button>
 
           {/* Logo centered between menu and nav items */}
-          <div className="flex-1 flex justify-between lg:ml-8">
-            <Link href="/" className="">
+          <div className="flex-1 flex justify-between lg:ml-8 lg:px-4" >
+            <Link href="/ " className=""  >
               <span className="text-2xl font-bold text-white tracking-tight hover:text-gray-300 transition duration-200">
-                <Image src={logo2} alt="logo" width={60} height={60} style={{minHeight:'60px', minWidth:'60px'}} />
+                <Image src={logo2} alt="logo" width={60} height={60} style={{minHeight:'60px', minWidth:'60px'}} onClick={()=>setIsLandingPage(true)} />
               </span>
             </Link>
-            <li className="lg:pb-5">
-                <SearchIcon className="text-white" onClick={()=>searchActive()}/>
-            </li>
+            {
+              !isLandingPage && (<li className="lg:pb-5">
+                  <SearchIcon className="text-white cursor-pointer" onClick={()=>searchActive()}/>
+                </li>)
+            }
           </div>
 
           {/* Navigation items on the right */}
@@ -89,7 +105,10 @@ function Nav() {
                   <Link href={item.href}>
                     <button
                       className="px-4 py-2 font-extrabold text-[20px] text-white hover:text-gray-300 hover:bg-gray-800 rounded-lg transition duration-200"
-                      onClick={()=>searchActive(0)}
+                      onClick={()=>{
+                        searchActive(0) 
+                        searchIconDisplay()
+                      }}
                     >
                       {item.label}
                     </button>
